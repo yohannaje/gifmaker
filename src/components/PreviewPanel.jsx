@@ -1,4 +1,5 @@
 export default function PreviewPanel({ gifUrl, generating, frames, previewOn, previewFrame }) {
+  const frameIndex = frames.length > 0 ? Math.min(previewFrame, frames.length - 1) : 0
   if (generating) {
     return (
       <div className="preview-panel">
@@ -12,7 +13,7 @@ export default function PreviewPanel({ gifUrl, generating, frames, previewOn, pr
     )
   }
 
-  if (gifUrl) {
+  if (previewOn && gifUrl) {
     return (
       <div className="preview-panel">
         <img className="preview-image" src={gifUrl} alt="Generated GIF" />
@@ -29,13 +30,41 @@ export default function PreviewPanel({ gifUrl, generating, frames, previewOn, pr
               key={f.id}
               src={f.src}
               alt=""
-              className={`preview-live-img${i === previewFrame ? ' visible' : ''}`}
+              className={`preview-live-img${i === frameIndex ? ' visible' : ''}`}
             />
           ))}
         </div>
         <div className="preview-live-label">
-          Live preview · {frames.length} frame{frames.length !== 1 ? 's' : ''} @ {frames[previewFrame]?.width}×{frames[previewFrame]?.height}
+          Live preview · {frames.length} frame{frames.length !== 1 ? 's' : ''} @ {frames[frameIndex]?.width}×{frames[frameIndex]?.height}
         </div>
+      </div>
+    )
+  }
+
+  if (frames.length > 0) {
+    return (
+      <div className="preview-panel">
+        <div className="preview-live">
+          {frames.map((f, i) => (
+            <img
+              key={f.id}
+              src={f.src}
+              alt=""
+              className={`preview-live-img${i === frameIndex ? ' visible' : ''}`}
+            />
+          ))}
+        </div>
+        <div className="preview-live-label">
+          Paused · {frames.length} frame{frames.length !== 1 ? 's' : ''} @ {frames[frameIndex]?.width}×{frames[frameIndex]?.height}
+        </div>
+      </div>
+    )
+  }
+
+  if (gifUrl) {
+    return (
+      <div className="preview-panel">
+        <img className="preview-image" src={gifUrl} alt="Generated GIF" />
       </div>
     )
   }

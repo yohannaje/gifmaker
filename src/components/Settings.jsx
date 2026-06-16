@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 
 const QUALITY_PRESETS = [
-  { label: 'Best', quality: 2, maxWidth: 1200 },
-  { label: 'Balanced', quality: 5, maxWidth: 800 },
-  { label: 'Small', quality: 10, maxWidth: 480 },
+  { label: 'Small', quality: 11, maxWidth: 480 },
+  { label: 'Balanced', quality: 16, maxWidth: 800 },
+  { label: 'Best', quality: 20, maxWidth: 1200 },
 ]
 
 export default function Settings({ value, onChange }) {

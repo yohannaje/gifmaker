@@ -43,12 +43,12 @@ export default function App() {
   const [gifUrl, setGifUrl] = useState(null)
   const [generating, setGenerating] = useState(null)
   const [progress, setProgress] = useState(0)
-  const [previewOn, setPreviewOn] = useState(true)
+  const [paused, setPaused] = useState(false)
   const [previewFrame, setPreviewFrame] = useState(0)
   const previewTimer = useRef(null)
   const [settings, setSettings] = useState({
     delay: 500,
-    quality: 5,
+    quality: 16,
     loop: 0,
     maxWidth: 800,
   })
@@ -94,7 +94,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    if (!previewOn || frames.length === 0) {
+    if (paused || frames.length === 0) {
       clearInterval(previewTimer.current)
       previewTimer.current = null
       return
@@ -104,7 +104,7 @@ export default function App() {
       setPreviewFrame((i) => (i + 1) % frames.length)
     }, settings.delay)
     return () => clearInterval(previewTimer.current)
-  }, [previewOn, frames.length, settings.delay])
+  }, [paused, frames.length, settings.delay])
 
   const handleGenerate = useCallback(async () => {
     const framesSnapshot = frames
@@ -142,7 +142,7 @@ export default function App() {
 
       const gif = new GIF({
         workers: 2,
-        quality: settings.quality,
+        quality: 21 - settings.quality,
         repeat: settings.loop === 0 ? 0 : settings.loop - 1,
         workerScript: '/gif.worker.js',
         width: gifW,
@@ -214,17 +214,17 @@ export default function App() {
 
           <Settings value={settings} onChange={setSettings} />
 
-          <label className={`toggle${previewOn ? ' on' : ''}`}>
+          <label className={`toggle${paused ? ' on' : ''}`}>
             <span className="toggle-track">
               <span className="toggle-thumb" />
             </span>
             <input
               type="checkbox"
-              checked={previewOn}
-              onChange={(e) => setPreviewOn(e.target.checked)}
+              checked={paused}
+              onChange={(e) => setPaused(e.target.checked)}
               hidden
             />
-            Preview
+            Pause animation
           </label>
 
           {generating && (
@@ -255,7 +255,7 @@ export default function App() {
             gifUrl={gifUrl}
             generating={generating}
             frames={frames}
-            previewOn={previewOn && !gifUrl && !generating}
+            previewOn={!paused}
             previewFrame={previewFrame}
           />
         </div>
