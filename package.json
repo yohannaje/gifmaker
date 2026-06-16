@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@hello-pangea/dnd": "^17.0.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "gif.js": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
