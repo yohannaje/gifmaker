@@ -144,7 +144,7 @@ export default function App() {
         workers: 2,
         quality: 21 - settings.quality,
         repeat: settings.loop === 0 ? 0 : settings.loop - 1,
-        workerScript: '/gif.worker.js',
+        workerScript: `${import.meta.env.BASE_URL}gif.worker.js`,
         width: gifW,
         height: gifH,
       })
